@@ -213,6 +213,10 @@ function JoinGame({setErrorBannerFade, setErrorBannerMessage}) {
                     className={classes.textField}
                     noValidate
                     autoComplete="off"
+                    onKeyPress={(event) => {
+                        if (event.key === 'Enter')
+                            event.preventDefault();
+                    }}
                 >
                     <ValidationTextField
                         label="Game PIN"
