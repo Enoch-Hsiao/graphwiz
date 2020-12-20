@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.grey[500],
     },
     equationText: {
-      marginTop: theme.spacing(1.75),
+      marginTop: theme.spacing(1.8),
     },
     button: {
       margin: theme.spacing(1),
@@ -409,7 +409,7 @@ export default function MultiPlayer() {
             date={Date.now() + 15000}
             onComplete={onCompleteCooldown}
             renderer={props => {
-              return <Typography variant="h4" color="primary">Cooldown: {props.seconds}</Typography>;
+              return <Typography variant="h4" color="secondary">Cooldown: {props.seconds}</Typography>;
             }
           }
           />);
@@ -418,7 +418,7 @@ export default function MultiPlayer() {
             date={Date.now() + 10000}
             onComplete={onCompleteCooldown}
             renderer={props => {
-              return <Typography variant="h4" color="primary">Check Leaderboards: {props.seconds}</Typography>;
+              return <Typography variant="h4" color="secondary">Check Leaderboards: {props.seconds}</Typography>;
             }
           }
           />);
@@ -441,14 +441,14 @@ export default function MultiPlayer() {
 
     if(state === 'gameState' && !cooldownTimer){
       if(!hasSubmitted) {
-        wordBanner = <Typography variant="h4" color="primary">Guess the equation!</Typography>;
+        wordBanner = <Typography variant="h4">Guess the equation!</Typography>;
       }
       timer = <Countdown
         date={date + 20499}
         onComplete={onCompleteGame}
         renderer={props => {
           secondsLeftInGame = Number(props.seconds);
-          return <Typography variant="h4" color="primary">Seconds left: {props.seconds}</Typography>;
+          return <Typography variant="h4" color="secondary">Seconds left: {props.seconds}</Typography>;
         }
       }
       />;
@@ -684,7 +684,7 @@ export default function MultiPlayer() {
           {wordBanner}
           <CoordinatePlaneGraph expressionToGuess={equation} guessedEquation={finalGuess} blankboard={!cooldownTimer && (state === 'idleState' || !hasJoinedGame)}/>
           <Box display="flex" flexDirection="row" p={1} m={1}>
-            <Typography variant="h6" display="block" noWrap className={classes.equationText}>
+            <Typography variant="h5" display="block" noWrap className={classes.equationText}>
                 Y =
             </Typography>
             {!hasJoinedGame || state === 'idleState' || isValidEquation ? (
@@ -692,7 +692,7 @@ export default function MultiPlayer() {
               id="equationGuessTextField"  
               disabled={!hasJoinedGame || finalGuess !== '' || state === 'idleState' || cooldownTimer}
               variant="outlined" 
-              label="Enter Equation Guess" 
+              label="Enter Equation Guess (x)" 
               className={classes.textfield} 
               value={equationGuessString}
               onChange={handleOnChangeGuess}
@@ -727,7 +727,7 @@ export default function MultiPlayer() {
         <Box display="flex" flexDirection="column" marginLeft='20px' > 
             {timer}
             {cooldownTimer}
-            {!cooldownTimer && !timer ? <Typography variant="h4" color="primary">Timer :</Typography> : null}
+            {!cooldownTimer && !timer ? <Typography variant="h4" color="secondary">Timer :</Typography> : null}
             <Typography variant="h5" display="block" color="primary" noWrap>
                 PIN:
                 <Typography variant="h6" style={{color: 'black'}} display="inline">{" " + gameID}</Typography>

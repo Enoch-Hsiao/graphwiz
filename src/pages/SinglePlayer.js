@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(0),
     },
     equationText: {
-      marginTop: theme.spacing(1.75),
+      marginTop: theme.spacing(1.8),
     },
     button: {
       margin: theme.spacing(1),
@@ -185,7 +185,7 @@ export default function SinglePlayer() {
             <Box display="flex" flexDirection="column" alignItems="center">
               <CoordinatePlaneGraph expressionToGuess={equation} guessedEquation={finalGuess}/>
               <Box display="flex" flexDirection="row" p={1} m={1}>
-                <Typography variant="h6" display="block" noWrap className={classes.equationText}>
+                <Typography variant="h5" display="block" noWrap className={classes.equationText}>
                     Y =
                 </Typography>
                 {isValidEquation ? (
@@ -206,7 +206,7 @@ export default function SinglePlayer() {
                   error
                   helperText={"Invalid Equation"}
                   variant="outlined" 
-                  label="Enter Equation Guess" 
+                  label="Enter Equation Guess (x)" 
                   className={classes.textfield} 
                   value={equationGuessString}
                   onChange={handleOnChangeGuess}
@@ -225,7 +225,7 @@ export default function SinglePlayer() {
               </Button>
             </Box>
         </Box>
-        <Box display="flex" flexDirection="column" > 
+        <Box display="flex" flexDirection="column" marginTop='30px'> 
             <Typography variant="h5" display="block" color="primary" noWrap>
                 Guess:
                 <Typography variant="h6" style={{color: 'black'}} display="inline">{finalGuess !== '' ? " " + equationGuessString : ''}</Typography>

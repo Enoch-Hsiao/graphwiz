@@ -56,10 +56,8 @@ function DialogTitle(props) {
   );
 }
 
-
 export default function HelpButtonSinglePlayer() {
     const classes = useStyles();
-
     const[open, setOpen]= useState(false);
 
     const handleOpen = () => {
@@ -75,35 +73,34 @@ export default function HelpButtonSinglePlayer() {
           onClose={handleClose}
           aria-labelledby="customized-dialog-title"
           open={open}
-          maxWidth={false}
+          fullWidth={true}
+          maxWidth={'sm'}
         >
-          <div style={{ width: 600 }}>
-            <DialogTitle onClose={handleClose}/>
-            <DialogContent dividers>
-                <Typography variant="h6">How the Game Works</Typography>
-                <Typography variant="body1">Given a graphed equation, your goal is to guess the correct equation. The lower the score, the better.</Typography>
-            </DialogContent>
-            <DialogContent dividers>
-                <Typography variant="h6">How the Score is Calculated</Typography>
-                <Typography variant="body1">The score is a reimann sum approximation of ∫|(Correct Equation) - (Guessed Equation)| from x = -10 to x = 10. The max/worst score is 9999. </Typography>
-            </DialogContent>
-            <DialogContent dividers>
-                <Typography variant="h6">Why is my Equation not Valid?</Typography>
-                <Typography variant="body1">This is the equation parser used and its valid syntax. For example, 'x' is the only valid variable allowed, and * must be in between each operand when needed.</Typography>
-                <Link target="_blank" href="https://github.com/silentmatt/expr-eval#expression-syntax" variant="body2">
-                  {'Equation Parser'}
-                </Link> 
-            </DialogContent>
-            <DialogActions>
-                <Button
-                    autoFocus
-                    onClick={handleClose}
-                    color="primary"
-                >
-                    Play on!
-                </Button>
-            </DialogActions>
-          </div>
+          <DialogTitle onClose={handleClose}/>
+          <DialogContent dividers>
+              <Typography variant="h6">How the Game Works</Typography>
+              <Typography variant="body1">Given a graphed equation, your goal is to guess the correct equation. The lower the score, the better.</Typography>
+          </DialogContent>
+          <DialogContent dividers>
+              <Typography variant="h6">How the Score is Calculated</Typography>
+              <Typography variant="body1">The score is a reimann sum approximation of ∫|(Correct Equation) - (Guessed Equation)| from x = -10 to x = 10. The max/worst score is 9999. </Typography>
+          </DialogContent>
+          <DialogContent dividers>
+              <Typography variant="h6">Why is my Equation not Valid?</Typography>
+              <Typography variant="body1">This is the equation parser used and its valid syntax. For example, 'x' is the only valid variable allowed, and * must be in between each operand when needed.</Typography>
+              <Link target="_blank" href="https://github.com/silentmatt/expr-eval#expression-syntax" variant="body2">
+                {'Equation Parser'}
+              </Link> 
+          </DialogContent>
+          <DialogActions>
+              <Button
+                  autoFocus
+                  onClick={handleClose}
+                  color="primary"
+              >
+                  Play on!
+              </Button>
+          </DialogActions>
         </Dialog>
           <IconButton size="medium" color="primary" onClick={handleOpen}>
               <HelpIcon className={classes.icon}/>
