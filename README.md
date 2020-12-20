@@ -1,7 +1,10 @@
 # GraphWiz - HackUMass VIII Project
+### Hosted on Domain.com http://graphwiz.online/ 
+### Hosted on Firebase https://graph-wiz.web.app/
+
 <img src="https://i.imgur.com/Esyz4j0.png" width="100%" border="0" />
+
 ## Description
-Hosted on Domain.com http://graphwiz.online/ 
 Ever wanted to test your knowledge and compete with others on linear, quadratic, polynomial, exponential, nth root, trigonometric, (and many more) equations? Well, now you can in the online single-player and real-time multiplayer game GraphWiz.
 
 ## Inspiration:
