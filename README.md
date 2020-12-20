@@ -1,5 +1,5 @@
 # GraphWiz - HackUMass VIII Project
-### Hosted on Domain.com http://graphwiz.online/ 
+### Hosted on Domain.com https://graphwiz.online/ 
 ### Hosted on Firebase https://graph-wiz.web.app/
 
 <img src="https://i.imgur.com/NnLQCiW.png" width="100%" border="0" />
