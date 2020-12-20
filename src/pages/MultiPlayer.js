@@ -196,7 +196,7 @@ export default function MultiPlayer() {
               playersArray.sort((a,b) => {
                 if(a.averageScore > b.averageScore) {
                   return 1;
-                } else if(a.averageScore > b.averageScore) {
+                } else if(a.averageScore < b.averageScore) {
                   return -1;
                 } else {
                   return 0;
@@ -418,7 +418,7 @@ export default function MultiPlayer() {
             date={Date.now() + 10000}
             onComplete={onCompleteCooldown}
             renderer={props => {
-              return <Typography variant="h4" color="secondary">Check Leaderboards: {props.seconds}</Typography>;
+              return <Typography variant="h4" color="secondary">Cooldown: {props.seconds}</Typography>;
             }
           }
           />);
@@ -475,26 +475,34 @@ export default function MultiPlayer() {
       db.ref('gameSessions/' + gameID + '/leaderboard').remove();
     }
 
+    
     //player leaves, remove player from database
     //closes or refreshes
     window.onbeforeunload = function() {
-      db.ref('gameSessions/' + gameID + '/players/' + playerID).remove();
+      if(playerID && playerID !== '') {
+        db.ref('gameSessions/' + gameID + '/players/' + playerID).remove();
+      }
       if(isHost || !players) {
         db.ref('gameSessions/' + gameID).remove();
       }
     };
     
+
     //changes url
     let history = useHistory();
     history.block(tx => {
-      db.ref('gameSessions/' + gameID + '/players/' + playerID).remove();
+      if(playerID && playerID !== '') {
+        db.ref('gameSessions/' + gameID + '/players/' + playerID).remove();
+      }
       if(isHost || !players) {
         db.ref('gameSessions/' + gameID).remove();
       }
     });
 
     function backButtonNavBar(){
-      db.ref('gameSessions/' + gameID + '/players/' + playerID).remove();
+      if(playerID && playerID !== '') {
+        db.ref('gameSessions/' + gameID + '/players/' + playerID).remove();
+      }
       if(isHost || !players) {
         db.ref('gameSessions/' + gameID).remove();
       }
@@ -783,6 +791,7 @@ export default function MultiPlayer() {
                 variant="contained"
                 color="primary"
                 onClick={openLeaderboardDialog}
+                disabled={state === 'gameState' && !hasSubmitted}
               >
                 <Typography variant="h5" display="block" noWrap>
                     Leaderboards
