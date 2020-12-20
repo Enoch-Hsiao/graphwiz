@@ -93,7 +93,7 @@ export default function HelpButtonSinglePlayer() {
             </DialogContent>
             <DialogContent dividers>
                 <Typography variant="h6">Why is my Equation not Valid?</Typography>
-                <Typography variant="body1">This is the equation parser used and its valid syntax. For example, * must be in between each operand when needed.</Typography>
+                <Typography variant="body1">This is the equation parser used and its valid syntax. For example, 'x' is the only valid variable allowed, and * must be in between each operand when needed.</Typography>
                 <Link target="_blank" href="https://github.com/silentmatt/expr-eval#expression-syntax" variant="body2">
                   {'Equation Parser'}
                 </Link> 

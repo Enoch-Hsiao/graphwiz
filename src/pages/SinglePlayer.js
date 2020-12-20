@@ -164,6 +164,8 @@ export default function SinglePlayer() {
       setTotalScore(0);
       setNumAttempted(0);
       setIsValidEquation(false);
+      const newIndex = Math.floor(Math.random() * Math.floor(equations.length));
+      setEquation(equations[newIndex]);
     }
 
     if(equationsData.loading || equation === '') {
