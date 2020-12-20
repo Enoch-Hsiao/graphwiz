@@ -1,12 +1,12 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button } from '@material-ui/core/';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Logo from '../Logo.PNG';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        flexGrow: 0.5,
+        flexGrow: 0.2,
         width: '100%',
         margin: theme.spacing(0),
         padding: theme.spacing(0),
@@ -69,8 +69,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function HomepageNavBar() {
+export default function HomepageNavBar({onClose}) {
     const classes = useStyles();
+    const history = useHistory();
+    function handleClose() {
+        if(onClose) {
+            onClose();
+        }
+        history.push('/home');
+    }
 
     return (
         <div className={classes.root}>
@@ -81,20 +88,19 @@ export default function HomepageNavBar() {
                         alt="Logo"
                         className={classes.logo}
                     />
-                    <Typography className={classes.title} variant="h5">
+                    <Typography className={classes.title} variant="h4">
                         GraphWiz
                     </Typography>
                     <Button
-                        component={Link}
-                        to={'/home'}
                         className={classes.loginButton}
                         variant="contained"
                         color="primary"
                         m={-2}
+                        onClick={handleClose}
                     >
                         <Typography
                             className={classes.loginButtonText}
-                            variant="h6"
+                            variant="h5"
                         >
                             Back
                         </Typography>

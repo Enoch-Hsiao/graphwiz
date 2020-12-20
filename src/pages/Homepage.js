@@ -67,7 +67,8 @@ const useStyles = makeStyles((theme) => ({
       fontFamily: 'Algerian'
     },
     logo: {
-        width: '100px',
+        marginTop: theme.spacing(3),
+        width: '150px',
     },
     joinSessionButton: {
         marginTop: theme.spacing(2),
@@ -188,7 +189,6 @@ function JoinGame({setErrorBannerFade, setErrorBannerMessage}) {
 
     function joinSession() {
         function onSuccess(response) {
-            console.log(response.val());
             if(response.val()) {
                 //move to Config file
                 history.push('multiplayer/' + PIN);
@@ -267,7 +267,7 @@ function Title() {
     const classes = useStyles();
     return (
         <Box display="flex" flexDirection="row" justifyContent="center" alignItems="center" className={classes.title}>
-            <WhiteTextTypography variant="h3" align="center" className={classes.title}>
+            <WhiteTextTypography variant="h2" align="center" className={classes.title}>
                 GraphWiz
             </WhiteTextTypography>
             <img

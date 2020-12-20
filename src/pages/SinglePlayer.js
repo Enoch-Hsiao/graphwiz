@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 function Title() {
   const classes = useStyles();
   return (
-    <Typography variant="h6" align="center" className={classes.title}>
+    <Typography variant="h4" align="center" className={classes.title}>
         Guess the equation!
     </Typography>
   );
@@ -224,23 +224,29 @@ export default function SinglePlayer() {
             </Box>
         </Box>
         <Box display="flex" flexDirection="column" > 
-            <Typography variant="h6" display="block" noWrap>
-                Guess: {finalGuess !== '' ? equationGuessString : ''}
+            <Typography variant="h5" display="block" color="primary" noWrap>
+                Guess:
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{finalGuess !== '' ? " " + equationGuessString : ''}</Typography>
             </Typography>
-            <Typography variant="h6" display="block" noWrap>
-                Answer: {finalGuess !== '' ? equation : ''}
+            <Typography variant="h5" display="block" color="primary" noWrap>
+                Answer:
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{finalGuess !== '' ? " " + equation : ''}</Typography>
             </Typography>
-            <Typography variant="h6" display="block" noWrap>
-                Score: {finalGuess !== '' ? score : ''}
+            <Typography variant="h5" display="block" color="primary" noWrap>
+                Score:
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{finalGuess !== '' ? " " + score : ''}</Typography>
             </Typography>
-            <Typography variant="h6" display="block" noWrap>
-                # attempted: {numAttempted ? numAttempted : ''}
+            <Typography variant="h5" display="block" color="primary" noWrap>
+                # attempted:
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{numAttempted ? " " + numAttempted : ''}</Typography>
             </Typography>
-            <Typography variant="h6" display="block" noWrap>
-                Total Score: {totalScore}
+            <Typography variant="h5" display="block" color="primary" noWrap>
+                Total Score:
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{" " + totalScore}</Typography>
             </Typography>
-            <Typography variant="h6" display="block" noWrap>
-                Average Score: { numAttempted !== 0 ? (totalScore / numAttempted).toFixed(0) : 'N/A'}
+            <Typography variant="h5" display="block" color="primary" noWrap>
+                Average Score:
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{ numAttempted !== 0 ? " " + (totalScore / numAttempted).toFixed(0) : ' N/A'}</Typography>
             </Typography>
             <Button
                 className={classes.button}

@@ -68,6 +68,14 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         flexDirection: 'column',
     },
+    errorContainer: {
+      marginTop: theme.spacing(3),
+      height: '100%',
+      width: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'column',
+    },
     copyright: {
         color: 'black',
         paddingBottom: theme.spacing(2),
@@ -194,6 +202,12 @@ export default function MultiPlayer() {
                   return 0;
                 }
               });
+              playersArray = playersArray.map((data, index) => {
+                return {
+                  ...data,
+                  rank: index + 1,
+                }
+              })
               setOverallLeaderboardData(playersArray);
           }
           setEquation(data.equation);
@@ -216,6 +230,12 @@ export default function MultiPlayer() {
                 }
               }
             });
+            leaderboardArray = leaderboardArray.map((data, index) => {
+              return {
+                ...data,
+                rank: index + 1,
+              }
+            })
             setCurrentGameLeaderboardData(leaderboardArray);
           } else {
             setCurrentGameLeaderboardData([]);
@@ -421,7 +441,7 @@ export default function MultiPlayer() {
 
     if(state === 'gameState' && !cooldownTimer){
       if(!hasSubmitted) {
-        wordBanner = <div>Guess the equation!</div>;
+        wordBanner = <Typography variant="h4" color="primary">Guess the equation!</Typography>;
       }
       timer = <Countdown
         date={date + 20499}
@@ -435,17 +455,17 @@ export default function MultiPlayer() {
     }
 
     if(state === 'idleState' && isHost && cooldownTimer) {
-      wordBanner = <Typography variant="subtitle">You are the Host! Start a new game when cooldown is over!</Typography>;
+      wordBanner = <Typography variant="h6">You are the Host! Start a new game when cooldown is over!</Typography>;
     } else if(hasSubmitted) {
-      wordBanner = <Typography variant="subtitle">Submitted! Select the leaderboards button to see where you placed!</Typography>;
+      wordBanner = <Typography variant="h6">Submitted! Select the leaderboards button to see where you placed!</Typography>;
     } else if(state === 'idleState' && isHost) {
-      wordBanner = <Typography variant="subtitle">You are the Host! Start a new game when you are ready!</Typography>;
+      wordBanner = <Typography variant="h6">You are the Host! Start a new game when you are ready!</Typography>;
     } else if(state === 'idleState' && !isHost) {
-      wordBanner = <Typography variant="subtitle">Please wait for the Host to start a new game!</Typography>;
+      wordBanner = <Typography variant="h6">Please wait for the Host to start a new game!</Typography>;
     }
 
     if(state === 'gameState' && !hasJoinedGame) {
-      wordBanner = <Typography variant="subtitle">Please wait until current game is over!</Typography>;
+      wordBanner = <Typography variant="h6">Please wait until current game is over!</Typography>;
       timer = null;
     }
 
@@ -472,6 +492,13 @@ export default function MultiPlayer() {
         db.ref('gameSessions/' + gameID).remove();
       }
     });
+
+    function backButtonNavBar(){
+      db.ref('gameSessions/' + gameID + '/players/' + playerID).remove();
+      if(isHost || !players) {
+        db.ref('gameSessions/' + gameID).remove();
+      }
+    }
 
     function OnlinePlayerList() {
       if(players) {
@@ -518,7 +545,7 @@ export default function MultiPlayer() {
       return (
         <div className={classes.issue}>
             <NavBar />
-            <div className={classes.container}>
+            <div className={classes.errorContainer}>
                 <ErrorIcon className={classes.iconError} />
                 <Typography align="center" variant="h3">
                     The host of the room left. Thanks for playing!
@@ -633,6 +660,7 @@ export default function MultiPlayer() {
           <DialogTitle onClose={closeLeaderboardDialog}/>
           <LeaderboardTable 
             columns={[
+              { title: 'Rank', field: 'rank' },
               { title: 'Name', field: 'name' },
               { title: 'Guess', field: 'guess' },
               { title: 'Score', field: 'score', type: 'numeric' },
@@ -642,6 +670,7 @@ export default function MultiPlayer() {
           />
           <LeaderboardTable 
             columns={[
+              { title: 'Rank', field: 'rank' },
               { title: 'Name', field: 'name' },
               { title: 'Average Score', field: 'averageScore', type: 'numeric' }]}
             title={'Overall Leaderboard'}
@@ -649,7 +678,7 @@ export default function MultiPlayer() {
           />
       </Dialog>
 
-      <NavBar />
+      <NavBar onClose={backButtonNavBar} />
       <Box display="flex" flexDirection="row" className={classes.title}>
         <Box display="flex" flexDirection="column" alignItems="center">
           {wordBanner}
@@ -699,32 +728,41 @@ export default function MultiPlayer() {
             {timer}
             {cooldownTimer}
             {!cooldownTimer && !timer ? <Typography variant="h4" color="primary">Timer :</Typography> : null}
-            <Typography variant="h6" display="block" noWrap>
-                PIN: {gameID}
+            <Typography variant="h5" display="block" color="primary" noWrap>
+                PIN:
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{" " + gameID}</Typography>
             </Typography>
-            <Typography variant="h6"  display="block" noWrap>
-                Name: {open ? '' : name}
+            <Typography variant="h5" display="block" color="primary" noWrap>
+                Name: 
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{open ? '' : " " + name}</Typography>
             </Typography>
-            <Typography variant="h6"  display="block" noWrap>
-                Guess: {finalGuess !== '' && finalGuess !== 345237498.23987238 ? equationGuessString : ''}
+            <Typography variant="h5" display="block" color="primary" noWrap>
+                Guess: 
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{finalGuess !== '' && finalGuess !== 345237498.23987238 ? " " + equationGuessString : ''}</Typography>
             </Typography>
-            <Typography variant="h6"  display="block" noWrap>
-                Answer: {finalGuess !== '' ? equation : ''}
+            <Typography variant="h5" display="block" color="primary" noWrap>
+                Answer:
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{finalGuess !== '' ? " " + equation : ''}</Typography>
             </Typography>
-            <Typography variant="h6"  display="block" noWrap>
-                Score: {finalGuess !== '' ? score : ''}
+            <Typography variant="h5" display="block" color="primary" noWrap>
+                Score: 
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{finalGuess !== '' ? " " + score : ''}</Typography>
             </Typography>
-            <Typography variant="h6"  display="block" noWrap>
-                Seconds Taken: {finalGuess !== '' ? secondsTaken : ''}
+            <Typography variant="h5" display="block" color="primary" noWrap>
+                Seconds Taken:
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{finalGuess !== '' ? " " + secondsTaken : ''}</Typography>
             </Typography>
-            <Typography variant="h6"  display="block" noWrap>
-                # attempted: {numAttempted ? numAttempted : ''}
+            <Typography variant="h5" display="block" color="primary" noWrap>
+                # attempted:
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{numAttempted !== null ? " " + numAttempted : ''}</Typography>
             </Typography>
-            <Typography variant="h6" display="block" noWrap>
-                Total Score: {totalScore}
+            <Typography variant="h5" display="block" color="primary" noWrap>
+                Total Score:
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{" " + totalScore}</Typography>
             </Typography>
-            <Typography variant="h6" display="block" noWrap>
-                Average Score: { numAttempted !== 0 ? (totalScore / numAttempted).toFixed(3) : 'N/A'}
+            <Typography variant="h5" display="block" color="primary" noWrap>
+                Average Score:
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{ numAttempted !== 0 ? " " + (totalScore / numAttempted).toFixed(3) : ' N/A'}</Typography>
             </Typography>
             {isHost ? 
               (

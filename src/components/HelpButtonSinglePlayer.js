@@ -81,15 +81,15 @@ export default function HelpButtonSinglePlayer() {
             <DialogTitle onClose={handleClose}/>
             <DialogContent dividers>
                 <Typography variant="h6">How the Game Works</Typography>
-                <Typography variant="body1">Given a graphed equation, your goal is to guess the correct equation.</Typography>
+                <Typography variant="body1">Given a graphed equation, your goal is to guess the correct equation. The lower the score, the better.</Typography>
             </DialogContent>
             <DialogContent dividers>
                 <Typography variant="h6">How the Score is Calculated</Typography>
-                <Typography variant="body1">The score is a reimann sum approximation of ∫|(Correct Equation) - (Guessed Equation)| from x = -10 to x = 10. </Typography>
+                <Typography variant="body1">The score is a reimann sum approximation of ∫|(Correct Equation) - (Guessed Equation)| from x = -10 to x = 10. The max/worst score is 9999. </Typography>
             </DialogContent>
             <DialogContent dividers>
                 <Typography variant="h6">Why is my Equation not Valid?</Typography>
-                <Typography variant="body1">This is the equation parser used and its valid syntax.</Typography>
+                <Typography variant="body1">This is the equation parser used and its valid syntax. For example, * must be in between each operand when needed/</Typography>
                 <Link target="_blank" href="https://github.com/silentmatt/expr-eval#expression-syntax" variant="body2">
                   {'Equation Parser'}
                 </Link> 
