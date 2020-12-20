@@ -14,7 +14,7 @@ With the toll of virtual classes and inspiration from learning resources such as
 The project is an educational game in which the user is given a graphed equation, and their goal is to come as close to the right equation as possible. The lower the score, the better. In real-time multiplayer, players have 20 seconds to guess the correct equation. The lowest score wins. Ties are broken by seconds taken to answer. Users see their personal statistics and can see their individual rank in the leaderboard table. Users can practice their ability to identify different types of equations and have competitive fun at the same time!
 
 ## How I built it:
-For front-end, I used HTML/CSS, Javascript, and React. I used Firebase and Domain.com for backend and hosting. I used Visual Studio Code as my main code editor.
+For front-end, I used HTML/CSS, Javascript, and React. I used Firebase and Domain.com for backend and hosting. I used Visual Studio Code as my main code editor. Overall, I spent the first hour planning the layout (Homepage, Multiplayer page, Singleplayer page and its necessary components), a couple of hours implementing single player, several hours on implementing real-time multiplayer with firebase, and several hours on testing, debugging, and making the UI look as clean and elegant as possible.
 
 ## Technologies I used:
 - HTML/CSS
@@ -23,19 +23,26 @@ For front-end, I used HTML/CSS, Javascript, and React. I used Firebase and Domai
 - React
 
 ## Challenges I ran into:
-Not having a lot of experience with Firebase, incorporating Firebase backend with real-time multiplayer was difficult. Issues such as players joining and leaving, updating leaderboards, setting states (idle state, ongoing game state, cooldown state) were difficult to find good solutions to.
+Not having a lot of experience with Firebase, incorporating Firebase backend with real-time multiplayer was difficult. Issues such as players joining and leaving, updating leaderboards, setting states (idle state, ongoing game state, cooldown state) were difficult to find good solutions to. Reading and quickly understanding documentation for the several libraries I used was also mind-numbing but worth it once everything worked out.
 
 ## Accomplishments I am proud of:
 I'm proud of making a real-time online multiplayer game similar to the likes of Kahoot! and TypeRacer. It brought me much insight in the complexities of synchronizing players within a session/room. Also, I am proud of improving my front-end and UI skills further, discovering new libraries to play with and explore, and building a functioning full-stack web application. Finally, I am proud of my ability to get a lot done in a short amount of time, constantly applying the KISS principle throughout.
 
 ## What I've learned:
-I learned the basics of Firebase and how to use its "Real-time" database to build the "Real-time" multiplayer game. Furthermore, I learned how to host a website using Domain.com and Firebase. Finally, I strengthened my overall skills in React and front-end web development.
+I learned the basics of Firebase and how to use its "real-time" database to build the "real-time" multiplayer game. Furthermore, I learned how to host a website using Domain.com and Firebase. Finally, I strengthened my overall skills in React and front-end web development.
 
 ## What's next:
 I would like to rethink, replan, and recode the real-time multiplayer section of the application, and make it more clean and robust (Timers are tricky!). I would also like to shift around the UI for the multiplayer section of the app to make it look more clean and appealing. I would love to make the web application mobile compatible and also add different game modes. Finally, I would like to add more crazy equations for users to guess to make the game more fun.
 
 ## Built with:
-I built the application using the front-end framework React, javascript libraries including JSXGraph, Material-Table, Material-UI, and Expr-Eval (Expression Evaluator), and Firebase and Domain.com for backend and hosting.
+I built the application using the front-end framework React, Javascript Libraries including JSXGraph (Visual graph), Material-Table (Leaderboards), Material-UI (Main component library for UI), and Expr-Eval (Expression Evaluator), and Firebase and Domain.com for backend and hosting.
+- https://reactjs.org/
+- https://firebase.google.com/
+- https://www.domain.com/
+- https://jsxgraph.uni-bayreuth.de/wp/index.html
+- https://material-ui.com/
+- https://github.com/silentmatt/expr-eval
+- https://material-table.com/
 
 ## Prizes we're going for:
 - Best Documentation
@@ -44,7 +51,6 @@ I built the application using the front-end framework React, javascript librarie
 - Best Venture Pitch
 - Best Beginner Software Hack
 - Best Beginner Web Hack
-- Best Use of Google Cloud
 
 # Getting Started with Create React App
 
