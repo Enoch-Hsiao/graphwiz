@@ -2,7 +2,7 @@
 ### Hosted on Domain.com http://graphwiz.online/ 
 ### Hosted on Firebase https://graph-wiz.web.app/
 
-<img src="https://i.imgur.com/7UeOTKR.png" width="100%" border="0" />
+<img src="https://i.imgur.com/NnLQCiW.png" width="100%" border="0" />
 
 ## Description
 Ever wanted to test your knowledge and compete with others on linear, quadratic, polynomial, exponential, nth root, trigonometric, (and many more) equations? Well, now you can in the online single-player and real-time multiplayer game GraphWiz.
