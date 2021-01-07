@@ -54,15 +54,6 @@ export default function CoordinatePlaneGraph({expressionToGuess, guessedEquation
           strokeWidth: 2, 
           strokecolor:'red',
         }) : null;
-
-        /*
-        let differenceGraph = guessFunction ? board.create('functiongraph', [function(x) {
-          return Math.abs(functionToGuess(x) - guessFunction(x));
-        }]) : null;
-        */
-
-        // eslint-disable-next-line
-        //let difference = guessFunction ? board.create('integral', [[-5, 5], differenceGraph]) : null;
         
         board.unsuspendUpdate();
       };

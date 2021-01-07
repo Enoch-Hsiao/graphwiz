@@ -89,7 +89,6 @@ export default function SinglePlayer() {
 
     const handleOnChangeGuess = (event) => {
       setEquationGuessString(event.target.value);
-      //setLogic(event.target.value);
       try {
         let equation = parser.parse(event.target.value);
         // eslint-disable-next-line

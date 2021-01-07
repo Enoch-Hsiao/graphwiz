@@ -902,5 +902,3 @@ export default function MultiPlayer() {
     </div>
   );
 }
-
-

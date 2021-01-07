@@ -72,7 +72,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 export default function Data({columns, data, title}) {
   const classes = useStyles();
   return (

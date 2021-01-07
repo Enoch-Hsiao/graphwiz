@@ -5,6 +5,7 @@
 * @param {number} end
 * @param {number} [step=0.01]
 */
+
 export default function integrate (f, start, end, step) {
  let total = 0
  step = step || 0.01
