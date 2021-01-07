@@ -1,4 +1,6 @@
 # GraphWiz - HackUMass VIII Project
+## Best Web App Winner + Grand Prize Runner-up
+
 ### Hosted on Domain.com https://graphwiz.online/ 
 ### Hosted on Firebase https://graph-wiz.web.app/
 
