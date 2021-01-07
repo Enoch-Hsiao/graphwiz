@@ -26,15 +26,15 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     textAlign: 'center',
   },
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    icon: {
-        width: '75px',
-        height: '75px',
-    },
+  container: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+  },
+  icon: {
+      width: '75px',
+      height: '75px',
+  },
 }));
 
 function DialogTitle(props) {
@@ -75,6 +75,7 @@ export default function HelpButtonSinglePlayer() {
           open={open}
           fullWidth={true}
           maxWidth={'sm'}
+          scroll="body"
         >
           <DialogTitle onClose={handleClose}/>
           <DialogContent dividers>

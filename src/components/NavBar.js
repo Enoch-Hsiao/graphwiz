@@ -6,7 +6,7 @@ import Logo from '../Logo.PNG';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        flexGrow: 0.2,
+
         width: '100%',
         margin: theme.spacing(0),
         padding: theme.spacing(0),
@@ -81,7 +81,7 @@ export default function HomepageNavBar({onClose}) {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static">
+            <AppBar>
                 <Toolbar>
                     <img
                         src={Logo}

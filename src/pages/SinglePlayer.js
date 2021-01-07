@@ -12,11 +12,10 @@ import get from '../universalHTTPRequests/get';
 import LoadingSpinner from '../components/LoadingSpinner';
 import NavBar from '../components/NavBar';
 import HelpButton from '../components/HelpButtonSinglePlayer';
+import DropdownEquations from '../components/DropdownEquations';
+import integrate from '../functions/integrate';
 
 const useStyles = makeStyles((theme) => ({
-    title: {
-      marginTop: theme.spacing(0),
-    },
     equationText: {
       marginTop: theme.spacing(1.8),
     },
@@ -32,14 +31,14 @@ const useStyles = makeStyles((theme) => ({
         height: '50px',
       },
     },
-     container: {
-        height: '100%',
-        width: '100%',
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'column',
-        backgroundColor: 'whitesmoke',
+    container: {
+      marginTop: theme.spacing(12),
+      height: '100%',
+      width: '100%',
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'column',
     },
     copyright: {
         color: 'black',
@@ -55,37 +54,6 @@ const useStyles = makeStyles((theme) => ({
         },
     },
 }));
-
-function Title() {
-  const classes = useStyles();
-  return (
-    <Typography variant="h4" align="center" className={classes.title}>
-        Guess the equation!
-    </Typography>
-  );
-}
-
-/**
- * Calculate the numeric integration of a function
- * @param {Function} f
- * @param {number} start
- * @param {number} end
- * @param {number} [step=0.01]
- */
-function integrate (f, start, end, step) {
-  let total = 0
-  step = step || 0.01
-  for (let x = start; x < end; x += step) {
-    if(isNaN(f(x + step / 2))) {
-      return 9999;
-    }
-    total += f(x + step / 2) * step;
-    if(total > 9999) {
-      return 9999;
-    }
-  }
-  return total;
-}
 
 export default function SinglePlayer() {
     const Parser = ParserTool.Parser;
@@ -105,6 +73,7 @@ export default function SinglePlayer() {
         error: null,
       }
     )
+    const [equationType, setEquationType] = useState('equations');
 
     //Get Equations
     let getData = () => {
@@ -113,10 +82,10 @@ export default function SinglePlayer() {
         setEquations(equationsArray);
         setEquation(equationsArray[Math.floor(Math.random() * Math.floor(equationsArray.length))]);
       }
-      get(setEquationsData, 'equations', null, onSuccess, true);
+      get(setEquationsData, equationType , null, onSuccess, true);
     }
 
-    useEffect(getData, []);
+    useEffect(getData, [equationType]);
 
     const handleOnChangeGuess = (event) => {
       setEquationGuessString(event.target.value);
@@ -168,6 +137,10 @@ export default function SinglePlayer() {
       setEquation(equations[newIndex]);
     }
 
+    const handleDropdownChange = (event) => {
+      setEquationType(event.target.value);
+    };
+
     if(equationsData.loading || equation === '') {
       return (
       <div>
@@ -179,9 +152,15 @@ export default function SinglePlayer() {
 
     return (
       <div className={classes.container}>
+
           <NavBar />
-          <Title />
+
           <Box display="flex" flexDirection="row">
+
+            {/*Dropdown to choose type of equations (Left Column)*/}
+            <DropdownEquations value={equationType} onChange={handleDropdownChange}/>
+
+            {/*Game Board (Middle Column)*/}
             <Box display="flex" flexDirection="column" alignItems="center">
               <CoordinatePlaneGraph expressionToGuess={equation} guessedEquation={finalGuess}/>
               <Box display="flex" flexDirection="row" p={1} m={1}>
@@ -225,6 +204,8 @@ export default function SinglePlayer() {
               </Button>
             </Box>
         </Box>
+
+        {/*Information Column (Right Column)*/}
         <Box display="flex" flexDirection="column" marginTop='30px'> 
             <Typography variant="h5" display="block" color="primary" noWrap>
                 Guess:

@@ -26,15 +26,15 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     textAlign: 'center',
   },
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    icon: {
-        width: '75px',
-        height: '75px',
-    },
+  container: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+  },
+  icon: {
+      width: '75px',
+      height: '75px',
+  },
 }));
 
 function DialogTitle(props) {
@@ -75,6 +75,7 @@ export default function HelpButtonSinglePlayer() {
           open={open}
           fullWidth={true}
           maxWidth={'sm'}
+          scroll="body"
         >
           <DialogTitle onClose={handleClose}/>
           <DialogContent dividers>
@@ -83,7 +84,7 @@ export default function HelpButtonSinglePlayer() {
           </DialogContent>
           <DialogContent dividers>
               <Typography variant="h6">How the Score is Calculated</Typography>
-              <Typography variant="body1">The score is a reimann sum approximation of ∫|(Correct Equation) - (Guessed Equation)| from x = -10 to x = 10. The max/worst score is 9999. </Typography>
+              <Typography variant="body1">The score is a reimann sum approximation of ∫|(Correct Equation) - (Guessed Equation)| from x = -10 to x = 10. The max/worst score is 99999. </Typography>
           </DialogContent>
           <DialogContent dividers>
               <Typography variant="h6">Why is my Equation not Valid?</Typography>
