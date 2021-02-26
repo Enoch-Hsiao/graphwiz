@@ -208,27 +208,27 @@ export default function SinglePlayer() {
         <Box display="flex" flexDirection="column" marginTop='30px'> 
             <Typography variant="h5" display="block" color="primary" noWrap>
                 Guess:
-                <Typography variant="h6" style={{color: 'black'}} display="inline">{finalGuess !== '' ? " " + equationGuessString : ''}</Typography>
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{finalGuess !== '' ? ' ' + equationGuessString : ''}</Typography>
             </Typography>
             <Typography variant="h5" display="block" color="primary" noWrap>
                 Answer:
-                <Typography variant="h6" style={{color: 'black'}} display="inline">{finalGuess !== '' ? " " + equation : ''}</Typography>
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{finalGuess !== '' ? ' ' + equation : ''}</Typography>
             </Typography>
             <Typography variant="h5" display="block" color="primary" noWrap>
                 Score:
-                <Typography variant="h6" style={{color: 'black'}} display="inline">{finalGuess !== '' ? " " + score : ''}</Typography>
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{finalGuess !== '' ? ' ' + score : ''}</Typography>
             </Typography>
             <Typography variant="h5" display="block" color="primary" noWrap>
                 # attempted:
-                <Typography variant="h6" style={{color: 'black'}} display="inline">{numAttempted ? " " + numAttempted : ''}</Typography>
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{numAttempted ? ' ' + numAttempted : ''}</Typography>
             </Typography>
             <Typography variant="h5" display="block" color="primary" noWrap>
                 Total Score:
-                <Typography variant="h6" style={{color: 'black'}} display="inline">{" " + totalScore}</Typography>
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{' ' + totalScore}</Typography>
             </Typography>
             <Typography variant="h5" display="block" color="primary" noWrap>
                 Average Score:
-                <Typography variant="h6" style={{color: 'black'}} display="inline">{ numAttempted !== 0 ? " " + (totalScore / numAttempted).toFixed(0) : ' N/A'}</Typography>
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{ numAttempted !== 0 ? ' ' + (totalScore / numAttempted).toFixed(0) : ' N/A'}</Typography>
             </Typography>
             <Button
                 className={classes.button}

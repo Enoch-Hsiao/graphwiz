@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Box,
@@ -8,28 +9,25 @@ import {
     DialogActions,
     DialogContent,
     Dialog,
-    List,
-    ListItem,
-    ListItemText,
-    ListItemIcon,
-    ListSubheader,
     IconButton,
 } from '@material-ui/core';
-import CoordinatePlaneGraph from '../components/CoordinatePlaneGraph';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import { db } from '../firebase/firebase';
+import Countdown from 'react-countdown';
 import ParserTool from 'expr-eval';
-import get from '../universalHTTPRequests/get';
+
+import CoordinatePlaneGraph from '../components/CoordinatePlaneGraph';
 import LoadingSpinner from '../components/LoadingSpinner';
 import NavBar from '../components/NavBar';
-import { useLocation, useHistory } from 'react-router-dom';
-import { db } from '../firebase/firebase';
-import ErrorIcon from '@material-ui/icons/Error';
-import Countdown from 'react-countdown';
-import PersonIcon from '@material-ui/icons/Person';
 import LeaderboardTable from '../components/LeaderboardTable';
 import HelpButton from '../components/HelpButtonMultiPlayer';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import CloseIcon from '@material-ui/icons/Close';
+import OnlinePlayerList from '../components/OnlinePlayerList';
+
 import integrate from '../functions/integrate';
+import get from '../universalHTTPRequests/get';
+
+import CloseIcon from '@material-ui/icons/Close';
+import ErrorIcon from '@material-ui/icons/Error';
 
 const useStyles = makeStyles((theme) => ({
     content: {
@@ -99,18 +97,6 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: theme.spacing(2),
         fontSize: '75px',
     },
-    onlinePlayerList: {
-      marginTop: theme.spacing(1),
-      marginLeft: theme.spacing(4),
-      height: '425px',
-      width: '250px',
-      border: "1px solid black",
-      wordWrap: 'break-word',
-      overflowY: 'scroll',
-    },
-    iconPerson: {
-      paddingLeft: '15px',
-    }
 }));
 
 export default function MultiPlayer() {
@@ -138,7 +124,7 @@ export default function MultiPlayer() {
     const[totalScore, setTotalScore] = useState(0);
     const[averageScore, setAverageScore] = useState('N/A');
     const[totalSecondsTaken, setTotalSecondsTaken] = useState(0);
-    const[averageSecondsTaken, setAverageSecondsTaken] = useState('N/A')
+    const[averageSecondsTaken, setAverageSecondsTaken] = useState('N/A');
 
     const[gameData, setGameData] = useState({
         data: null,
@@ -183,6 +169,9 @@ export default function MultiPlayer() {
     const [currentGameLeaderboardData, setCurrentGameLeaderboardData] = useState([]);
     const [overallLeaderboardData, setOverallLeaderboardData] = useState([]);
 
+    //used as FinalGuess number if a user does not submit during a game
+    const RANDOMNUM = 345237498.23987238;
+
     // eslint-disable-next-line 
     const [playersData, setPlayersData] = useState({
       data: null,
@@ -202,8 +191,9 @@ export default function MultiPlayer() {
             setHasJoinedGame(true);
           }
 
-          if(data.players){
+          if(data.players) {
               let playersArray = Object.entries(data.players).map((data) => data[1]);
+              //Sort players by highest score
               playersArray.sort((a,b) => {
                 if(a.averageScore > b.averageScore) {
                   return 1;
@@ -235,6 +225,7 @@ export default function MultiPlayer() {
           //Current Game leaderboard
           if(data.leaderboard) {
             let leaderboardArray = Object.entries(data.leaderboard).map((data) => data[1]);
+            //Sort players by highest score, if tied, then by seconds taken
             leaderboardArray.sort((a,b) => {
               if(a.score < b.score) {
                 return -1;
@@ -257,7 +248,7 @@ export default function MultiPlayer() {
               }
             })
             setCurrentGameLeaderboardData(leaderboardArray);
-          } else {
+          } else { //if no leaderboard, set leaderboard data to an empty array
             setCurrentGameLeaderboardData([]);
           }
 
@@ -271,11 +262,6 @@ export default function MultiPlayer() {
         }
       }
 
-      // eslint-disable-next-line
-      function onError(response) {
-
-      }
-
       get(setGameData, 'gameSessions/'+ gameID, null, onSuccess);
     }
 
@@ -286,7 +272,7 @@ export default function MultiPlayer() {
       setOpen(false);
     };
   
-    const handleCloseJoinSession = (e) => {
+    const handleCloseJoinSession = () => {
       let validInput = true;
       function onSuccess(response) {
           if (!name || !name.trim()) {
@@ -329,6 +315,7 @@ export default function MultiPlayer() {
             setOpen(false);
           }
         }
+
       get(setPlayersData, 'gameSessions/' + gameID + '/players/', null, onSuccess, true);
     };
 
@@ -359,6 +346,7 @@ export default function MultiPlayer() {
       }
     }
 
+    //User submits an answer
     const submit = () => {
       let exprGuess = parser.parse(equationGuessString);
       let exprActual = parser.parse(equation);
@@ -389,6 +377,7 @@ export default function MultiPlayer() {
       let averageSecondsTaken = Number((updatedTotalSecondsTaken / (numAttempted + 1)).toFixed(3));
       setAverageSecondsTaken(averageSecondsTaken);
 
+      // update current game leaderboard database with player submission data
       db.ref('gameSessions/' + gameID + '/leaderboard/' + playerID).set({
         name: name,
         score: Number(scoreReceived),
@@ -396,6 +385,7 @@ export default function MultiPlayer() {
         guess: equationGuessString,
       });
 
+      // update overall leaderboard with player submission data
       db.ref('gameSessions/' + gameID + '/players/' + playerID).set({
         host: isHost,
         name: name,
@@ -408,11 +398,12 @@ export default function MultiPlayer() {
     const [timer, setTimer] = useState(null);
     const [cooldownTimer, setCooldownTimer] = useState(null);
 
-    // startingState -> inGameState -> cooldownState
+    //States of a game: startingState -> inGameState -> cooldownState
     const [gameState, setGameState] = useState(null);
     let wordBanner = null;
     const [startGameButton, setStartGameButton] = useState(true);
 
+    //Timer has ended during the game
     function onCompleteGame () {
       setGameState("cooldownState");
       if(hasJoinedGame) {
@@ -423,9 +414,10 @@ export default function MultiPlayer() {
 
           //User did not submit during game
           if(!data) {
+            //Set worst score
             setScore(99999);
             //Fill in random Final Guess
-            setFinalGuess(345237498.23987238);
+            setFinalGuess(RANDOMNUM);
             setNumAttempted(numAttempted + 1);
             let updatedTotalScore = (Number(totalScore) + Number(99999)).toFixed(0);
             setTotalScore(updatedTotalScore);
@@ -441,6 +433,7 @@ export default function MultiPlayer() {
             let averageSecondsTaken = Number((updatedTotalSecondsTaken / (numAttempted + 1)).toFixed(3));
             setAverageSecondsTaken(averageSecondsTaken);
 
+            // update current game leaderboard database with player submission data
             db.ref('gameSessions/' + gameID + '/leaderboard/' + playerID).set({
               name: name,
               score: 99999,
@@ -448,6 +441,7 @@ export default function MultiPlayer() {
               guess: 'N/A',
             });
 
+            // update overall game leaderboard database with player submission data
             db.ref('gameSessions/' + gameID + '/players/' + playerID).set({
               host: isHost,
               name: name,
@@ -463,6 +457,7 @@ export default function MultiPlayer() {
 
         //Game has ended
         if(isHost) {
+          //Host gets 15 seconds of cooldown (in cases of lag)
           db.ref('gameSessions/' + gameID + '/state').set("idleState");
           setStartGameButton(false);
           setCooldownTimer(<Countdown
@@ -474,6 +469,7 @@ export default function MultiPlayer() {
           }
           />);
         } else {
+          //All players get a cooldown of 10 seconds
           setCooldownTimer(<Countdown
             date={Date.now() + 10000}
             onComplete={onCompleteCooldown}
@@ -487,6 +483,7 @@ export default function MultiPlayer() {
     }
 
     const onCompleteCooldown = () => {
+      //Reset game board for player
       setFinalGuess('');
       setEquationGuessString('');
       setIsValidEquation(false);
@@ -509,7 +506,7 @@ export default function MultiPlayer() {
     }
 
     //Game has started: Starting State
-    if (hasJoinedGame  && state === 'gameState' && gameState !== "inGameState" && gameState !== "coolingState" && !cooldownTimer && !timer && !startingGameTimer){
+    if (hasJoinedGame  && state === 'gameState' && gameState !== "inGameState" && gameState !== "coolingState" && !cooldownTimer && !timer && !startingGameTimer) {
       if(!hasSubmitted) {
         wordBanner = <Typography variant="h4">Game is starting!</Typography>;
       }
@@ -526,7 +523,7 @@ export default function MultiPlayer() {
       />);
     } 
     
-    if (hasJoinedGame && state === 'gameState' && gameState === "inGameState" && !timer){
+    if (hasJoinedGame && state === 'gameState' && gameState === "inGameState" && !timer) {
       //Game has started: In Game State
       setTimer(<Countdown
         date={date + 20000}
@@ -553,6 +550,7 @@ export default function MultiPlayer() {
       wordBanner = <Typography variant="h6">Please wait until current game is over!</Typography>;
     }
 
+    //Host starts a new game
     const startNewGame = () => {
       db.ref('gameSessions/' + gameID + '/date').set(Date.now() + 6000);
       db.ref('gameSessions/' + gameID + '/state').set("gameState");
@@ -561,62 +559,36 @@ export default function MultiPlayer() {
 
     //player leaves, remove player from database
 
-      //closes or refreshes
-      window.onbeforeunload = function() {
-        if(playerID && playerID !== '') {
-          db.ref('gameSessions/' + gameID + '/players/' + playerID).remove();
-        }
-        if(isHost || !players) {
-          db.ref('gameSessions/' + gameID).remove();
-        }
-      };
-      
-      //changes url
-      let history = useHistory();
-      history.block(tx => {
-        if(playerID && playerID !== '') {
-          db.ref('gameSessions/' + gameID + '/players/' + playerID).remove();
-        }
-        if(isHost || !players) {
-          db.ref('gameSessions/' + gameID).remove();
-        }
-      });
-
-      function backButtonNavBar(){
-        if(playerID && playerID !== '') {
-          db.ref('gameSessions/' + gameID + '/players/' + playerID).remove();
-        }
-        if(isHost || !players) {
-          db.ref('gameSessions/' + gameID).remove();
-        }
+    //closes or refreshes
+    window.onbeforeunload = function() {
+      if(playerID && playerID !== '') {
+        db.ref('gameSessions/' + gameID + '/players/' + playerID).remove();
       }
+      if(isHost || !players) {
+        db.ref('gameSessions/' + gameID).remove();
+      }
+    };
+    
+    //changes url
+    let history = useHistory();
+    history.block(tx => {
+      if(playerID && playerID !== '') {
+        db.ref('gameSessions/' + gameID + '/players/' + playerID).remove();
+      }
+      if(isHost || !players) {
+        db.ref('gameSessions/' + gameID).remove();
+      }
+    });
 
-    function OnlinePlayerList() {
-      if(players) {
-        return <div className={classes.onlinePlayerList}>
-                <List subheader={<ListSubheader>Online Players</ListSubheader>}>
-                  {players.map((playerData, index) => (
-                    <ListItem>
-                      <Typography variant="h6">
-                        {(index + 1)}
-                      </Typography>
-                      <ListItemIcon className={classes.iconPerson}>
-                        <PersonIcon color={playerData.host ? "primary" : ""}/>
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={playerData.name}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              </div>
-      } else {
-        return <div className={classes.onlinePlayerList}>
-                <List subheader={<ListSubheader>Online Players</ListSubheader>}>
-                </List>
-              </div>;
+    function backButtonNavBar(){
+      if(playerID && playerID !== '') {
+        db.ref('gameSessions/' + gameID + '/players/' + playerID).remove();
+      }
+      if(isHost || !players) {
+        db.ref('gameSessions/' + gameID).remove();
       }
     }
+
     const[openLeaderboards, setOpenLeaderboards] = useState(false);
     const openLeaderboardDialog = () => {
       setOpenLeaderboards(true);
@@ -826,6 +798,7 @@ export default function MultiPlayer() {
 
         {/*Information Column (Middle Column)*/}
         <Box display="flex" flexDirection="column" marginLeft='20px' > 
+            {/*Timers*/}
             {timer}
             {cooldownTimer}
             {startingGameTimer}
@@ -840,7 +813,7 @@ export default function MultiPlayer() {
             </Typography>
             <Typography variant="h5" display="block" color="primary" noWrap>
                 Guess: 
-                <Typography variant="h6" style={{color: 'black'}} display="inline">{finalGuess !== '' && finalGuess !== 345237498.23987238 ? " " + equationGuessString : ''}</Typography>
+                <Typography variant="h6" style={{color: 'black'}} display="inline">{finalGuess !== '' && finalGuess !== RANDOMNUM ? " " + equationGuessString : ''}</Typography>
             </Typography>
             <Typography variant="h5" display="block" color="primary" noWrap>
                 Answer:
@@ -895,7 +868,7 @@ export default function MultiPlayer() {
 
         {/*Online Players List + Help Button (Right Column)*/}
         <Box display="flex" flexDirection="column" alignItems="center">
-          <OnlinePlayerList/>
+          <OnlinePlayerList players={players}/>
           <HelpButton />
         </Box>
       </Box>

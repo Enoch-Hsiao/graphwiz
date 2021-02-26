@@ -25,7 +25,6 @@ export default function Data({value, onChange}) {
       <FormControl className={classes.formControl}>
         <Typography variant="h6" className={classes.dropdownHeader}>Choose Type:</Typography>
         <NativeSelect
-          labelId="dropdownEquationsLabel"
           id="dropdownEquations"
           value={value}
           onChange={onChange}

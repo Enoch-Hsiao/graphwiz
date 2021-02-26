@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CoordinatePlaneGraph({expressionToGuess, guessedEquation, blankboard }) {
+export default function CoordinatePlaneGraph({expressionToGuess, guessedEquation, blankboard}) {
     const classes = useStyles();
     const Parser = ParserTool.Parser;
     const parser = new Parser();
@@ -22,18 +22,13 @@ export default function CoordinatePlaneGraph({expressionToGuess, guessedEquation
       expr = parser.parse(expressionToGuess);
       functionToGuess = expr.toJSFunction("x");
       expr.evaluate({x:0});
-    } catch (error) {
-
-    }
+    } catch (error) {}
 
     try {
       expr2 = parser.parse(guessedEquation);
       guessFunction = expr2.toJSFunction("x");
       expr2.evaluate({x:0});
-    } catch (error) {
-
-    }
-
+    } catch (error) {}
 
     let logic = blankboard ? 
       (board) => {
